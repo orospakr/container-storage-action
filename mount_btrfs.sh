@@ -33,12 +33,13 @@ for ATTEMPT in $(seq 1 "$MAX_RETRIES"); do
     echo "Enough space available: $AVAILABLE_HUMAN"
     break  # Exit the loop if enough space is available
   else
-    echo "Not enough space, it seems like the runner has not mounted /mnt yet"
+    echo "Not enough space, it seems like the runner has not mounted /mnt yet "
     echo "Available size: $AVAILABLE_HUMAN. Waiting 5 seconds..."
     sleep 5
 
     if (( ATTEMPT == MAX_RETRIES )); then
-      echo "Max retries reached. Exiting."
+      echo "Max retries reached. Exiting. Here's the output of mount to aid in debugging:"
+      mount
       exit 1
     fi
   fi
