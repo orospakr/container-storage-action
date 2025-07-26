@@ -20,22 +20,20 @@ btrfs_pdir="$(dirname "$_BTRFS_LOOPBACK_FILE")"
 # Install btrfs-progs
 sudo apt-get install -y btrfs-progs
 
-echo "Finished ensurin btrfs-progs is installed"
-
 # use 60 GB to determine if Github mounted /mnt already
 # It should have 66GB avail out of 74GB
 MIN_SPACE=$((60 * 1000 * 1000 * 1000))
 MAX_RETRIES=3
 
 for ATTEMPT in $(seq 1 "$MAX_RETRIES"); do
-  AVAILABLE=$(findmnt /mnt --bytes --df --json | jq -r '.filesystems[0].avail')
-  AVAILABLE_HUMAN=$(findmnt /mnt --df --json | jq -r '.filesystems[0].avail')
+  AVAILABLE=$(findmnt /mnt --bytes --df --json 2>/dev/null | jq -r '.filesystems[0].avail' 2>/dev/null || echo 0)
+  AVAILABLE_HUMAN=$(findmnt /mnt --df --json 2>/dev/null | jq -r '.filesystems[0].avail' 2>/dev/null || echo "unknown")
 
   if [[ "$AVAILABLE" -ge "$MIN_SPACE" ]]; then
     echo "Enough space available: $AVAILABLE_HUMAN"
     break  # Exit the loop if enough space is available
   else
-    echo "Not enough space, it seems like the runner has not mounted /mnt yet "
+    echo "Not enough space, it seems like the runner has not mounted /mnt yet"
     echo "Available size: $AVAILABLE_HUMAN. Waiting 5 seconds..."
     sleep 5
 
