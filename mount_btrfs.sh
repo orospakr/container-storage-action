@@ -39,7 +39,7 @@ for ATTEMPT in $(seq 1 "$MAX_RETRIES"); do
 
     if (( ATTEMPT == MAX_RETRIES )); then
       echo "Max retries reached. Exiting. Here's the output of mount to aid in debugging:"
-      mount
+      df -h
       exit 1
     fi
   fi
