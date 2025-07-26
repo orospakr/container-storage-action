@@ -20,6 +20,8 @@ btrfs_pdir="$(dirname "$_BTRFS_LOOPBACK_FILE")"
 # Install btrfs-progs
 sudo apt-get install -y btrfs-progs
 
+echo "Finished ensurin btrfs-progs is installed"
+
 # use 60 GB to determine if Github mounted /mnt already
 # It should have 66GB avail out of 74GB
 MIN_SPACE=$((60 * 1000 * 1000 * 1000))
